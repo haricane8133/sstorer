@@ -1,7 +1,5 @@
 import * as fs from "fs-extra";
 
-const fname = 'sstorer.data';
-
 export class Sstorer{
     /**
      * Denotes the session duration in minutes
@@ -108,7 +106,7 @@ export class Sstorer{
      * Stores the data present to the file fname
      * @returns True if successful, False if not
      */
-    dump(): boolean{
+    dump(fname: string): boolean{
         try{
             fs.writeJSONSync(fname, this);
             return true;
@@ -119,7 +117,7 @@ export class Sstorer{
      * Loads the data from the file fname
      * @returns True if successful, False if not
      */
-    load(): boolean{
+    load(fname: string): boolean{
         try{
             let tmp = fs.readJSONSync(fname);
             this['storage'] = tmp['storage'];
