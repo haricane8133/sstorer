@@ -25,5 +25,9 @@
   },
   "dependencies": {
     "@types/fs-extra": "5.0.4"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/haricane8133/sstorer/issues"
+  },
+  "homepage": "https://github.com/haricane8133/sstorer#readme"
 }
