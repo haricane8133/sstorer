@@ -14,7 +14,11 @@ Have nodeJS and NPM installed in your machine
 
 Install the library from NPM and use it! The examples shown below will help get you started
 
+```powershell
+npm i sstorer
 ```
+
+```ts
 import sstorer = require("sstorer");
 /*
 or import * as sstorer from "sstorer";
