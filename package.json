@@ -1,6 +1,6 @@
 {
   "name": "sstorer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This module allows you to store variables separate for separate sessions effectively and efficiently",
   "main": "./dist/sstorer.js",
   "types": "./dist/sstorer.d.ts",
