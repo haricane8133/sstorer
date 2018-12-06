@@ -18,12 +18,20 @@ Install the library from NPM and use it! The examples shown below will help get 
 npm i sstorer
 ```
 
+TypeScript import
 ```ts
 import sstorer = require("sstorer");
-/*
-or import * as sstorer from "sstorer";
-*/
+// or import * as sstorer from "sstorer";
+```
 
+JavaScript import
+
+```js
+var sstorer = require("sstorer");
+```
+
+Examples
+```js
 // Create the object that contains everything needed
 // param 'duration' is the lifetime of each session in minutes
 let store = sstorer.init(duration: number)
