@@ -1,6 +1,6 @@
 {
   "name": "sstorer",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "This module allows you to store variables separate for separate sessions effectively and efficiently",
   "main": "./dist/sstorer.js",
   "types": "./dist/sstorer.d.ts",
@@ -20,11 +20,12 @@
   "author": "Hari.R aka haricane8133",
   "license": "LGPL-3.0",
   "devDependencies": {
-    "typescript": "3.2.1",
-    "@types/fs-extra": "5.0.4"
+    "@types/fs-extra": "5.0.4",
+    "typescript": "3.2.1"
   },
   "dependencies": {
-    "fs-extra": "7.0.1"
+    "fs-extra": "7.0.1",
+    "lodash": "^4.17.21"
   },
   "bugs": {
     "url": "https://github.com/haricane8133/sstorer/issues"

@@ -1,4 +1,5 @@
 import * as fs from "fs-extra";
+const _ = require('lodash');
 
 export class Sstorer{
     /**
@@ -6,17 +7,20 @@ export class Sstorer{
      */
     duration: number;
 
-    autospawnsession: boolean
+    autospawnsession: boolean = false;
+
+    defaultSessionVariables: Object = {};
 
     /**
      * After the given duration, the storage is invaid
      * @param duration Duration of each session in minutes
-     * @param autospawnsession When inserting variables, autospawn session if not already available.
+     * @param options Execution Options
      */
-    constructor(duration: number, autospawnsession: boolean = false) {
+    constructor(duration: number, options: InitOptions) {
         this.duration = duration;
         this['storage'] = {};
-        this.autospawnsession = autospawnsession;
+        this.autospawnsession = _.get(options, 'autospawnsession', false);
+        this.defaultSessionVariables = _.get(options, 'defaultSessionVariables', {});
     }
     /**
      * This is to change the duration of each session
@@ -44,7 +48,7 @@ export class Sstorer{
      * @param sessionid This is a unique key that contains it's separate data
      */
     spawnSession(sessionid: string): void{
-        this['storage'][sessionid] = {};
+        this['storage'][sessionid] = this.defaultSessionVariables;
         this.refreshSession(sessionid);
     }
     /**
@@ -135,12 +139,23 @@ export class Sstorer{
     }
 }
 
+interface InitOptions {
+    /**
+     * When inserting variables, autospawn session if not already available.
+     */
+    autospawnsession: boolean;
+    /**
+     * An Object containing variables that you want for each Session to get initialized with
+     */
+    defaultSessionVariables: Object;
+}
+
 /**
  * Returns an object that stores variabes separate for each session, for the given session duration
  * @param duration Duration of each session in minutes
- * @param autospawnsession When inserting variables, autospawn session if not already available.
+ * @param options Execution Options
  * @author Hari.R aka haricane8133
  */
-export function init(duration: number, autospawnsession: boolean = false){
-    return new Sstorer(duration, autospawnsession);
+export function init(duration: number, options: InitOptions){
+    return new Sstorer(duration, options);
 }
