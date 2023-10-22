@@ -6,13 +6,17 @@ export class Sstorer{
      */
     duration: number;
 
+    autospawnsession: boolean
+
     /**
      * After the given duration, the storage is invaid
      * @param duration Duration of each session in minutes
+     * @param autospawnsession When inserting variables, autospawn session if not already available.
      */
-    constructor(duration: number) {
+    constructor(duration: number, autospawnsession: boolean = false) {
         this.duration = duration;
         this['storage'] = {};
+        this.autospawnsession = autospawnsession;
     }
     /**
      * This is to change the duration of each session
@@ -27,7 +31,7 @@ export class Sstorer{
      * @returns false - If session is already dead
      * @returns true - If session has been successfully refreshed
      */
-    refreshSession(sessionid): boolean{
+    refreshSession(sessionid: string): boolean{
         if(this.isSessionActive(sessionid)){
             this['storage'][sessionid]['timestamp'] = Date.now()/1000;
             return true;
@@ -39,7 +43,7 @@ export class Sstorer{
      * Starts a new unit of storage for the given sessionid
      * @param sessionid This is a unique key that contains it's separate data
      */
-    spawnSession(sessionid): void{
+    spawnSession(sessionid: string): void{
         this['storage'][sessionid] = {};
         this.refreshSession(sessionid);
     }
@@ -47,7 +51,7 @@ export class Sstorer{
      * Destroyes the storage under this sessionid
      * @param sessionid This is a unique key that contains it's separate data
      */
-    killSession(sessionid): void{
+    killSession(sessionid: string): void{
         this['storage'][sessionid] = undefined;
     }
     /**
@@ -56,7 +60,7 @@ export class Sstorer{
      * @returns True if the session is active
      * @returns False if the session has expired
      */
-    isSessionActive(sessionid): boolean{
+    isSessionActive(sessionid: string): boolean{
         if(this['storage'][sessionid] == undefined || Date.now()/1000 - this['storage'][sessionid]['timestamp'] > this.duration*60){
             this.killSession(sessionid);
             return false;
@@ -76,10 +80,14 @@ export class Sstorer{
      * @returns True if the session is active and the value is inserted
      * @returns False if the session has expired and storage was not done
      */
-    putVar(sessionid, paramName, paramVal): boolean{
+    putVar(sessionid: string, paramName: string, paramVal: any): boolean{
         if(this.isSessionActive(sessionid)){
             this['storage'][sessionid][paramName] = paramVal;
             this.refreshSession(sessionid);
+            return true;
+        } else if(this.autospawnsession) {
+            this.spawnSession(sessionid);
+            this['storage'][sessionid][paramName] = paramVal;
             return true;
         } else {
             return false;
@@ -94,7 +102,7 @@ export class Sstorer{
      * @returns undefined if there is no such variable is declared in the session
      * @returns The value of the variable if al OK
      */
-    getVar(sessionid, paramName): any {
+    getVar(sessionid: string, paramName: string): any {
         if(this.isSessionActive(sessionid)){
             return this['storage'][sessionid][paramName];
         } else{
@@ -129,9 +137,10 @@ export class Sstorer{
 
 /**
  * Returns an object that stores variabes separate for each session, for the given session duration
- * @param duration 
+ * @param duration Duration of each session in minutes
+ * @param autospawnsession When inserting variables, autospawn session if not already available.
  * @author Hari.R aka haricane8133
  */
-export function init(duration: number){
-    return new Sstorer(duration)
+export function init(duration: number, autospawnsession: boolean = false){
+    return new Sstorer(duration, autospawnsession);
 }
